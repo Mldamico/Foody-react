@@ -1,10 +1,10 @@
 import { useLoaderData } from "react-router-dom";
 import { getMenu } from "../../services/apiRestaurant";
 import MenuItem from "./MenuItem";
-import { Menu } from "../../types/Menu";
+import { Menu as IMenu } from "../../types/Menu";
 
 function Menu() {
-  const menu = useLoaderData() as Menu[];
+  const menu = useLoaderData() as IMenu[];
 
   return (
     <ul>
