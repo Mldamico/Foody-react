@@ -4,7 +4,7 @@ import { Username } from "../features/user/Username";
 
 export const Header = () => {
   return (
-    <header className="bg-yellow-500 sm:px-6 uppercase px-4 py-3 border-b border-stone-200 flex justify-between items-center">
+    <header className="flex items-center justify-between border-b border-stone-200 bg-yellow-500 px-4 py-3 font-pizza uppercase sm:px-6">
       <Link to="/" className="tracking-widest">
         Foody
       </Link>
