@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 interface IButton {
   children: string;
-  isSubmitting: boolean;
+  isSubmitting?: boolean;
   to?: string;
 }
 
