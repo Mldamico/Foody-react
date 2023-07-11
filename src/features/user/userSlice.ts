@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit";
+
 interface Position {
   coords: { latitude: number; longitude: number };
 }
@@ -33,3 +35,21 @@ async function fetchAddress() {
 
   return { position, address };
 }
+
+const initialState = {
+  username: "Unknown",
+};
+
+const userSlice = createSlice({
+  name: "user",
+  initialState,
+  reducers: {
+    updateUsername(state, action) {
+      state.username = action.payload;
+    },
+  },
+});
+
+export const { updateUsername } = userSlice.actions;
+
+export default userSlice.reducer;
