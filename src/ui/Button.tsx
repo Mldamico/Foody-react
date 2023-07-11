@@ -7,6 +7,7 @@ interface IButton {
   isSubmitting?: boolean;
   to?: string;
   type?: styles;
+  onClick?: () => void;
 }
 
 export const Button = ({
@@ -14,6 +15,7 @@ export const Button = ({
   isSubmitting,
   to,
   type = "primary",
+  onClick,
 }: IButton) => {
   const base =
     "inline-block text-sm font-semibold tracking-wide uppercase transition-colors duration-300 bg-yellow-400 rounded-full text-stone-800 hover:bg-yellow-300 focus:bg-yellow-300 focus:outline-none focus:ring focus:ring-yellow-300 focus:ring-offset-2 disabled:cursor-not-allowed";
@@ -30,6 +32,18 @@ export const Button = ({
       <Link to={to} className={styles[type]}>
         {children}
       </Link>
+    );
+  }
+
+  if (onClick) {
+    return (
+      <button
+        onClick={onClick}
+        disabled={isSubmitting}
+        className={styles[type]}
+      >
+        {children}
+      </button>
     );
   }
   return (
