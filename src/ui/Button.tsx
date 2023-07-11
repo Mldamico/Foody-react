@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 type styles = "primary" | "small" | "secondary";
 
 interface IButton {
-  children: string;
+  children: string | string[];
   isSubmitting?: boolean;
   to?: string;
   type?: styles;
