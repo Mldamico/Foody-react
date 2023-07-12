@@ -1,7 +1,8 @@
-import { useAppDispatch } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 import { Button } from "../../ui/Button";
 import { formatCurrency } from "../../utils/helpers";
-import { addItem } from "../cart/cartSlice";
+import { DeleteItem } from "../cart/DeleteItem";
+import { addItem, getCurrentQuantityById } from "../cart/cartSlice";
 
 interface IMenuPizzaProps {
   pizza: any;
@@ -9,6 +10,8 @@ interface IMenuPizzaProps {
 
 function MenuItem({ pizza }: IMenuPizzaProps) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
+  const currentQuantity = useAppSelector(getCurrentQuantityById(id));
+
   const dispatch = useAppDispatch();
 
   const handleAddToCart = () => {
@@ -42,7 +45,8 @@ function MenuItem({ pizza }: IMenuPizzaProps) {
               Sold out
             </p>
           )}
-          {!soldOut && (
+          {currentQuantity > 0 && <DeleteItem pizzaId={id} />}
+          {!soldOut && currentQuantity === 0 && (
             <Button onClick={handleAddToCart} type="small">
               Add to cart
             </Button>
