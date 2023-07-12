@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "../../store";
 import { Button } from "../../ui/Button";
 import { formatCurrency } from "../../utils/helpers";
 import { DeleteItem } from "../cart/DeleteItem";
+import { UpdateItemQuantity } from "../cart/UpdateItemQuantity";
 import { addItem, getCurrentQuantityById } from "../cart/cartSlice";
 
 interface IMenuPizzaProps {
@@ -45,7 +46,15 @@ function MenuItem({ pizza }: IMenuPizzaProps) {
               Sold out
             </p>
           )}
-          {currentQuantity > 0 && <DeleteItem pizzaId={id} />}
+          {currentQuantity > 0 && (
+            <div className="flex items-center gap-3 sm:gap-8">
+              <UpdateItemQuantity
+                pizzaId={id}
+                currentQuantity={currentQuantity}
+              />
+              <DeleteItem pizzaId={id} />
+            </div>
+          )}
           {!soldOut && currentQuantity === 0 && (
             <Button onClick={handleAddToCart} type="small">
               Add to cart
