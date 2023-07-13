@@ -1,46 +1,29 @@
 import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
 import { Button } from "../../ui/Button";
-import { useAppSelector } from "../../store";
+import { store, useAppDispatch, useAppSelector } from "../../store";
+import EmptyCart from "../cart/EmptyCart";
+import { fetchAddress } from "../user/userSlice";
 const isValidPhone = (str: string) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
     str
   );
 
-const fakeCart = [
-  {
-    pizzaId: 12,
-    name: "Mediterranean",
-    quantity: 2,
-    unitPrice: 16,
-    totalPrice: 32,
-  },
-  {
-    pizzaId: 6,
-    name: "Vegetale",
-    quantity: 1,
-    unitPrice: 13,
-    totalPrice: 13,
-  },
-  {
-    pizzaId: 11,
-    name: "Spinach and Mushroom",
-    quantity: 1,
-    unitPrice: 15,
-    totalPrice: 15,
-  },
-];
-
 function CreateOrder() {
   const { username } = useAppSelector((state) => state.user);
   // const [withPriority, setWithPriority] = useState(false);
-  const cart = fakeCart;
+  const { cart } = useAppSelector((state) => state.cart);
   const { state } = useNavigation();
   const isSubmitting = state === "submitting";
   const formError: any = useActionData();
+  const dispatch = useAppDispatch();
+
+  if (!cart.length) return <EmptyCart />;
+
   return (
     <div className="px-4 py-6">
       <h2 className="mb-8 text-xl font-semibold">Ready to order? Let's go!</h2>
+      <button onClick={() => dispatch(fetchAddress())}>Get position</button>
       {/* action="/order/new" */}
       <Form method="POST">
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -128,6 +111,9 @@ export async function action({ request }: { request: Request }) {
   if (Object.keys(errors).length > 0) return errors;
 
   const newOrder = await createOrder(order);
+
+  store;
+
   return redirect(`/order/${newOrder.id}`);
 }
 

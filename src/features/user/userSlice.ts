@@ -1,29 +1,30 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getAddress } from "../../services/apiGeocoding";
+
+// interface Address {
+//   locality: any;
+//   city: any;
+//   postcode: any;
+//   countryName: any;
+// }
+
+// function getAddress(position: {
+//   latitude: number;
+//   longitude: number;
+// }): Address {
+//   return { locality: "", city: "", postcode: 11, countryName: "" };
+// }
 
 interface Position {
   coords: { latitude: number; longitude: number };
 }
-interface Address {
-  locality: any;
-  city: any;
-  postcode: any;
-  countryName: any;
-}
-
-function getAddress(position: {
-  latitude: number;
-  longitude: number;
-}): Address {
-  return { locality: "", city: "", postcode: 11, countryName: "" };
-}
-
 function getPosition(): Promise<Position> {
   return new Promise(function (resolve, reject) {
     navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 }
 
-async function fetchAddress() {
+export const fetchAddress = createAsyncThunk("user/fetchAddress", async () => {
   const positionObj: Position = await getPosition();
   const position = {
     latitude: positionObj.coords.latitude,
@@ -34,10 +35,14 @@ async function fetchAddress() {
   const address = `${addressObj?.locality}, ${addressObj?.city} ${addressObj?.postcode}, ${addressObj?.countryName}`;
 
   return { position, address };
-}
+});
 
 const initialState = {
   username: "Unknown",
+  status: "idle",
+  position: {},
+  address: "",
+  error: "",
 };
 
 const userSlice = createSlice({
@@ -48,6 +53,20 @@ const userSlice = createSlice({
       state.username = action.payload;
     },
   },
+  extraReducers: (builder) =>
+    builder
+      .addCase(fetchAddress.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(fetchAddress.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.position = action.payload.position;
+        state.address = action.payload.address;
+      })
+      .addCase(fetchAddress.rejected, (state, action) => {
+        state.status = "error";
+        state.error = action.error.message || "Something wrong happened";
+      }),
 });
 
 export const { updateUsername } = userSlice.actions;
