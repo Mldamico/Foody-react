@@ -1,3 +1,8 @@
+import React, {
+  ButtonHTMLAttributes,
+  DetailedHTMLProps,
+  SyntheticEvent,
+} from "react";
 import { Link } from "react-router-dom";
 
 type styles = "primary" | "small" | "secondary" | "round";
@@ -8,6 +13,8 @@ interface IButton {
   to?: string;
   type?: styles;
   onClick?: () => void;
+  buttonType?: "button" | "submit" | "reset" | undefined;
+  isLoading?: boolean;
 }
 
 export const Button = ({
@@ -15,6 +22,8 @@ export const Button = ({
   isSubmitting,
   to,
   type = "primary",
+  buttonType = "button",
+  isLoading,
   onClick,
 }: IButton) => {
   const base =
@@ -39,8 +48,9 @@ export const Button = ({
   if (onClick) {
     return (
       <button
+        type={buttonType}
         onClick={onClick}
-        disabled={isSubmitting}
+        disabled={isSubmitting || isLoading}
         className={styles[type]}
       >
         {children}

@@ -37,7 +37,19 @@ export const fetchAddress = createAsyncThunk("user/fetchAddress", async () => {
   return { position, address };
 });
 
-const initialState = {
+interface State {
+  username: string;
+  status: "idle" | "loading" | "error";
+  position: {
+    latitude?: number;
+    longitude?: number;
+  };
+
+  address: string;
+  error: string;
+}
+
+const initialState: State = {
   username: "Unknown",
   status: "idle",
   position: {},
@@ -65,7 +77,8 @@ const userSlice = createSlice({
       })
       .addCase(fetchAddress.rejected, (state, action) => {
         state.status = "error";
-        state.error = action.error.message || "Something wrong happened";
+        state.error =
+          "There was an issue getting your address. Please allow location permissions.";
       }),
 });
 
