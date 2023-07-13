@@ -4,7 +4,6 @@ import { Button } from "../../ui/Button";
 import { store, useAppDispatch, useAppSelector } from "../../store";
 import EmptyCart from "../cart/EmptyCart";
 import { fetchAddress } from "../user/userSlice";
-import React, { SyntheticEvent } from "react";
 const isValidPhone = (str: string) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
     str

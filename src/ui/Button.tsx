@@ -1,8 +1,3 @@
-import React, {
-  ButtonHTMLAttributes,
-  DetailedHTMLProps,
-  SyntheticEvent,
-} from "react";
 import { Link } from "react-router-dom";
 
 type styles = "primary" | "small" | "secondary" | "round";
